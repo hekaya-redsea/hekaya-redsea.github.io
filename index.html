@@ -61,7 +61,7 @@ body{padding-bottom:70px}
 <div id="tw"><label>رقم الطاولة · Table number</label><input id="tb" inputmode="numeric"></div>
 <div id="aw" style="display:none"><label>العنوان · Address</label><textarea id="ad" rows="2"></textarea></div>
 <label>ملاحظات · Notes (e.g. juice flavour)</label><textarea id="nt" rows="2"></textarea>
-<div class="sub"><span>المجموع · Subtotal</span><span id="sub">0</span></div><div class="sub" id="svw"><span>خدمة 14% · Service 14%</span><span id="sv">0</span></div><div class="tot"><span>الإجمالي · Total</span><span id="tot">0</span></div><small id="svn" style="color:#CDBFA9"></small><button class="send" onclick="sendOrder()">ابعت الطلب على واتساب · Send via WhatsApp</button></div></div>
+<div class="sub"><span>المجموع · Subtotal</span><span id="sub">0</span></div><div class="sub" id="svw"><span>ضريبة 14% · Tax 14%</span><span id="sv">0</span></div><div class="tot"><span>الإجمالي · Total</span><span id="tot">0</span></div><small id="svn" style="color:#CDBFA9"></small><button class="send" onclick="sendOrder()">ابعت الطلب على واتساب · Send via WhatsApp</button></div></div>
 <script>
 var C={};var WA='201211455662';
 function save(){try{localStorage.setItem('hk',JSON.stringify(C))}catch(e){}}
@@ -71,12 +71,12 @@ function ref(){var q=0,t=0;for(var k in C){q+=C[k].q;t+=C[k].q*C[k].p}document.g
 var h='';for(var k in C){var c=C[k];h+='<div class="ln"><div>'+c.en+'<small>'+c.ar+' · '+c.p+'</small></div><div class="qty"><button onclick="ch('+k+',-1)">−</button><b>'+c.q+'</b><button onclick="ch('+k+',1)">+</button></div></div>'}document.getElementById('lines').innerHTML=h;if(!q)closeCart()}
 function calc(t){var dine=document.getElementById('ty').value=='dine';var sv=dine?Math.round(t*0.14):0;
 document.getElementById('sub').textContent=t+' EGP';document.getElementById('sv').textContent=sv+' EGP';document.getElementById('svw').style.display=dine?'flex':'none';
-document.getElementById('tot').textContent=(t+sv)+' EGP';document.getElementById('svn').textContent=dine?'خدمة 14% للطلب داخل المطعم · 14% service for dine-in':'بدون خدمة · No service charge (رسوم التوصيل تُحدد عند التأكيد · delivery fee confirmed on order)'}
+document.getElementById('tot').textContent=(t+sv)+' EGP';document.getElementById('svn').textContent=dine?'ضريبة 14% للطلب داخل المطعم · 14% tax for dine-in':'بدون ضريبة · No tax (رسوم التوصيل تُحدد عند التأكيد · delivery fee confirmed on order)'}
 function ch(k,d){C[k].q+=d;if(C[k].q<=0)delete C[k];save();ref()}
 function openCart(){document.getElementById('sheet').style.display='block'}function closeCart(){document.getElementById('sheet').style.display='none'}
 function tc(){ref();var v=document.getElementById('ty').value;document.getElementById('tw').style.display=v=='dine'?'block':'none';document.getElementById('aw').style.display=v=='del'?'block':'none'}
 function sendOrder(){var m='طلب جديد من المنيو الإلكتروني - Hekaya\n------------\n',t=0;for(var k in C){var c=C[k];m+=c.q+' x '+c.en+' ('+c.ar+') = '+c.q*c.p+'\n';t+=c.q*c.p}
-var ty=document.getElementById('ty').value;var sv=ty=='dine'?Math.round(t*0.14):0;m+='------------\nالمجموع / Subtotal: '+t+' EGP\n';if(sv)m+='خدمة 14% / Service: '+sv+' EGP\n';m+='الإجمالي / TOTAL: '+(t+sv)+' EGP\n';
+var ty=document.getElementById('ty').value;var sv=ty=='dine'?Math.round(t*0.14):0;m+='------------\nالمجموع / Subtotal: '+t+' EGP\n';if(sv)m+='ضريبة 14% / Tax: '+sv+' EGP\n';m+='الإجمالي / TOTAL: '+(t+sv)+' EGP\n';
 m+='النوع / Type: '+(ty=='dine'?'داخل المطعم - طاولة '+document.getElementById('tb').value:ty=='take'?'استلام':'توصيل - '+document.getElementById('ad').value)+'\n';
 m+='الاسم: '+document.getElementById('nm').value+'\nالموبايل: '+document.getElementById('ph').value+'\n';var n=document.getElementById('nt').value;if(n)m+='ملاحظات: '+n+'\n';
 if(!t){return}window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(m),'_blank')}
